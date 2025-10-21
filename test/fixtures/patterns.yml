@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  source: MyString
+  rating: 1.5
+  difficulty: 1.5
+  made: 1
+  tags: MyString
+  yarn_weight: MyString
+  stitch_type: MyString
+  size: MyString
+  yarn_estimate: 1.5
+  notes: MyString
+  link: MyString
+  user_id: 1
+
+two:
+  title: MyString
+  source: MyString
+  rating: 1.5
+  difficulty: 1.5
+  made: 1
+  tags: MyString
+  yarn_weight: MyString
+  stitch_type: MyString
+  size: MyString
+  yarn_estimate: 1.5
+  notes: MyString
+  link: MyString
+  user_id: 1
