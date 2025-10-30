@@ -1,0 +1,9 @@
+<h1><%= @pattern.title %></h1>
+
+<div class="card p-3 mb-3 shadow-sm">
+    <p><strong>Source:</strong> <%= @pattern.source %></p>
+    <p><strong>Link:</strong> <%= link_to @pattern.link, @pattern.link, target: "_blank" %></p>
+    <p><strong>Difficulty:</strong> <%= @pattern.difficulty %></p>
+    <p><strong>Rating:</strong> <%= @pattern.rating %></p>
+    <p><strong>Times Made:</strong> <%= @pattern.made %></p>
+</div>
