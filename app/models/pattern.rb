@@ -16,12 +16,12 @@ class Pattern < ApplicationRecord
     validates :notes, length: {minimum: 10}
     validates :link, presence:true
 
-    before_validation :calculate_estimate_yarn, if: -> { yarn_weight.present? && stitch_type.present? && size.present? }
+    before_validation :calculate_estimated_yarn, if: -> { yarn_weight.present? && stitch_type.present? && size.present? }
 
-    private 
+  private
 
-    def calculate_estimate_yarn
-        self.estimate_yarn = YarnCalculator.estimate(yarn_weight, stitch_type, size)
-    end
-    
+  def calculate_estimated_yarn
+    self.estimated_yarn = YarnCalculator.estimate(yarn_weight, stitch_type, size)
+  end
+
 end

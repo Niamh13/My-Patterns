@@ -14,7 +14,7 @@ class PatternsController < ApplicationController
   def show
     @recommendations = RecommendationSystem.similar_patterns(@pattern, Pattern.all)
 
-    @estimate_yarn = @pattern.estimate_yarn
+    @estimate_yarn = @estimated_yarn = YarnCalculator.estimate(@pattern.yarn_weight, @pattern.stitch_type, @pattern.size)
   end
 
   # GET /patterns/new
