@@ -21,7 +21,7 @@ class Pattern < ApplicationRecord
   private
 
   def calculate_estimated_yarn
-    self.estimated_yarn = YarnCalculator.estimate(yarn_weight, stitch_type, size)
+    self.yarn_estimate = YarnCalculator.estimate(yarn_weight, stitch_type, size)
   end
 
 end

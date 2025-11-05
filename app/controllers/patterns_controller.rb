@@ -7,14 +7,16 @@ class PatternsController < ApplicationController
 
   # GET /patterns
   def index
-    @patterns = Pattern.all.order(created_at: :desc)
+    @patterns = Pattern.all
+    render json: @patterns
   end
 
   # GET /patterns/1
   def show
     @recommendations = RecommendationSystem.similar_patterns(@pattern, Pattern.all)
 
-    @estimate_yarn = @estimated_yarn = YarnCalculator.estimate(@pattern.yarn_weight, @pattern.stitch_type, @pattern.size)
+    @yarn_estimate = @yarn_estimate = YarnCalculator.estimate(@pattern.yarn_weight, @pattern.stitch_type, @pattern.size)
+    render json: { pattern: @pattern, recommendations: @recommendations, yarn_estimate: @yarn_estimate }
   end
 
   # GET /patterns/new
@@ -30,25 +32,25 @@ class PatternsController < ApplicationController
     @pattern = Pattern.new(pattern_params)
 
     if @pattern.save
-      redirect_to @pattern, notice: "Pattern was successful created."
+      render json: @book, status: :created, location: @book, notice: "Pattern was successful created."
     else
-      render :new, status: :unprocessable_entity
+      render json: @book.errors, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /patterns/1
   def update
     if @pattern.update(pattern_params)
-      redirect_to @pattern, notice: "Pattern was successful updated."
+      render json: @pattern, notice: "Pattern was successfully updated."
     else 
-      render :edit, status: :unprocessable_entity
+      render json: @pattern.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE /patterns/1
   def destroy
     @pattern.destroy!
-    redirect_to patterns_url, notice: "Pattern was successfully destroyed."
+    render notice: "Pattern was successfully destroyed."
   end
 
   private
