@@ -1,24 +1,7 @@
-# README
+# My-Patterns
+Cloud Application Development: CAD Project
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+A crochet and kintting pattern application where users can store and share links to patterns
+- The users can add, delete, edit, and view their added records
+- Pattern Recommendation Engine: recommends similar patterns based off difficulty rating and tags (personalized descovery)
+- Yarn Usage Calculator: Estimates the total yarn length needed based off the yarn weight (light, medium, or bulky), main stitch type (single crochet, double crochet, knit, purl), and size of the project (small, meduim, or large)
