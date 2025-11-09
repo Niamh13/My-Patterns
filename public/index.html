@@ -5,38 +5,38 @@
   <meta charset="UTF-8" />
   <style>
     body {
-  margin: auto;
-  text-align: center;
-  font-family: Arial, sans-serif;
-}
+      margin: auto;
+      text-align: center;
+      font-family: Arial, sans-serif;
+    }
+    
+    .header {
+      background-color: #6eddab6a;
+      padding: 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .hidden {
+      display: none;
+    }
+    button {
+      margin-right: 8px;
+      padding: 6px 12px;
+      border: none;
+      background-color: #06ba7e;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #0056b3;
+    }
 
-.header {
-  background-color: #6eddab6a;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
-.hidden {
-  display: none;
-}
-
-button {
-  margin-right: 8px;
-  padding: 6px 12px;
-  border: none;
-  background-color: #06ba7e;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-
-table {
+    table {
   display: block;
   margin: 4%;
 }
@@ -55,16 +55,15 @@ table {
   padding: 10px;
 
 }
-
-
-  </style>
+    
+      </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
       <h2>Welcome to My Patterns</h2>
     </div>
-    <input type=""text" id="searchBox" placeholder="Search by title or tag">
+    <input type="text" id="searchBox" placeholder="Search by title or tag" />
     <br>
     <br>
     <button id="toggleForm">Add New Pattern</button>
@@ -126,5 +125,6 @@ table {
   </div>
 
     <script src="./scripts.js"></script>
+    
   </body>
 </html>

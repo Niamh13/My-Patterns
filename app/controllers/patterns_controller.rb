@@ -1,72 +1,75 @@
-require "recommendation_system"
-require "yarn_calculator"
-
 class PatternsController < ApplicationController
-  
-  before_action :set_pattern, only: %i[ show edit update destroy ]
+  before_action :set_pattern, only: %i[show update destroy]
 
   # GET /patterns
   def index
-    @patterns = Pattern.all
+    if params[:q].present?
+      @patterns = Pattern.search(params[:q]).order(created_at: :desc)
+    else
+      @patterns = Pattern.all.order(created_at: :desc)
+    end
     render json: @patterns
   end
 
-  # GET /patterns/1
+
+
+  # GET /patterns/:id
   def show
-    #@recommendations = RecommendationSystem.similar_patterns(@pattern, Pattern.all)
+    yarn_estimate = YarnCalculator.estimate(
+      @pattern.yarn_weight,
+      @pattern.stitch_type,
+      @pattern.size
+    )
 
-    @yarn_estimate = @yarn_estimate = YarnCalculator.estimate(@pattern.yarn_weight, @pattern.stitch_type, @pattern.size)
-    render json: { pattern: @pattern, recommendations: @recommendations, yarn_estimate: @yarn_estimate }
+    render json: {
+      pattern: @pattern,
+      yarn_estimate: yarn_estimate
+    }
   end
-
-  # GET /patterns/new
-  def new
-    @pattern = Pattern.new
-  end
-
-  # GET /patterns/1/edit
-  def edit; end
 
   # POST /patterns
   def create
     @pattern = Pattern.new(pattern_params)
 
     if @pattern.save
-      render json: @book, status: :created, location: @book, notice: "Pattern was successful created."
+      render json: @pattern, status: :created
     else
-      render json: @book.errors, status: :unprocessable_entity
+      render json: { errors: @pattern.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /patterns/1
+  # PUT /patterns/:id
   def update
+    @pattern = Pattern.find(params[:id])
     if @pattern.update(pattern_params)
-      render json: @pattern, notice: "Pattern was successfully updated."
-    else 
-      render json: @pattern.errors, status: :unprocessable_entity
+      render json: { pattern: @pattern }, status: :ok
+    else
+      render json: { errors: @pattern.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
-  # DELETE /patterns/1
+  # DELETE /patterns/:id
   def destroy
     @pattern.destroy!
-    render notice: "Pattern was successfully destroyed."
+    render json: { message: "Pattern successfully deleted." }
   end
 
-  # GET /patterns/:id/recommendations
-  #def recommendations
-  #  recs = RecommendationSystem.similar_patterns(@pattern, Pattern.all)
-  #  render json: recs.as_json(only: [:id, :title, :difficulty, :tags])
-  #end
+  def recommendations
+    recs = RecommendationSystem.similar_patterns(@pattern, Pattern.all)
+    render json: recs.as_json(only: [:id, :title, :difficulty, :tags])
+  end
+
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_pattern
-      @pattern = Pattern.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def pattern_params
-      params.require(:pattern).permit( :title, :source, :rating, :difficulty, :made, :tags, :yarn_weight, :stitch_type, :size, :yarn_estimate, :notes, :link, :user_id )
-    end
+  def set_pattern
+    @pattern = Pattern.find(params[:id])
+  end
+
+  def pattern_params
+    params.require(:pattern).permit(
+      :title, :source, :link, :user_id, :rating, :difficulty,
+      :made, :tags, :yarn_weight, :stitch_type, :size, :notes
+    )
+  end
 end

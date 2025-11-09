@@ -20,6 +20,11 @@ class Pattern < ApplicationRecord
     before_validation :calculate_estimated_yarn, if: -> { yarn_weight.present? && stitch_type.present? && size.present? }
     before_save :normalize_tags
 
+    scope :search, -> (term) {
+      where("LOWER(title) LIKE :term OR LOWER(tags) LIKE :term", term: "%#{term.downcase}%")
+    }
+
+
   private
 
   def calculate_estimated_yarn
