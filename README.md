@@ -1,4 +1,4 @@
-# My-Patterns
+# My-Patterns (Mid Point Github)
 Cloud Application Development: CAD Project
 
 A crochet and kintting pattern application where users can store and share links to patterns
