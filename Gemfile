@@ -44,4 +44,8 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # Add bundler-audit (required by your GitHub Actions pipeline)
+  gem "bundler-audit", require: false
 end
+
