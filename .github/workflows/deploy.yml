@@ -1,9 +1,9 @@
 name: Deploy to AWS EC2
 
 on:
-  pull_request:
   push:
     branches: [ main ]
+  pull_request:
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Environment Variables
+      - name: Set up SSH Key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
@@ -27,33 +27,45 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i myKey.pem ubuntu@${ELASTIC_IP} << 'EOF'
             set -e
 
-            # Pull fresh repo
-            sudo rm -rf My-Patterns
+            # --- SYSTEM DEPENDENCIES ---
+            sudo apt update -y
+            sudo apt install -y git build-essential curl
+
+            # --- INSTALL mise IF MISSING ---
+            if ! command -v mise &> /dev/null; then
+              curl https://mise.jdx.dev/install.sh | sh
+              echo 'export PATH="$HOME/.local/share/mise/bin:$PATH"' >> ~/.bashrc
+              export PATH="$HOME/.local/share/mise/bin:$PATH"
+            fi
+
+            # --- INSTALL RUBY WITH mise ---
+            # Reads .tool-versions from your repo automatically
+            mise install ruby
+
+            # Ensure Ruby is on PATH
+            export PATH="$HOME/.local/share/mise/installs/ruby/3.4.7/bin:$PATH"
+
+            # --- CLONE LATEST CODE ---
+            rm -rf My-Patterns
             git clone https://github.com/Niamh13/My-Patterns.git
             cd My-Patterns
 
-            # Ensure Ruby from mise is available
-            export PATH="/home/ubuntu/.local/share/mise/installs/ruby/3.4.7/bin:\$PATH"
-
-            # Install dependencies
+            # --- INSTALL GEM DEPENDENCIES ---
+            gem install bundler --no-document
             bundle install
-            bundle binstubs bundler-audit brakeman rubocop --force
 
-            # Security & linting tools
-            bundle exec bundle audit --update
+            # --- SECURITY + LINTING TOOLS ---
+            bundle exec bundler-audit update
             bundle exec brakeman --no-pager
             bundle exec rubocop --autocorrect-all --disable-uncorrectable
 
-            # Database migrations
-            rails db:migrate
+            # --- DATABASE MIGRATIONS ---
+            bundle exec rails db:migrate
 
-            # Ensure the script is executable
+            # --- START SERVER ---
             chmod +x startServer.sh
-
-            # Start Rails server
             ./startServer.sh
           EOF
 
-      - name: Clean up
-        run: |
-          rm -f myKey.pem
+      - name: Cleanup
+        run: rm -f myKey.pem
