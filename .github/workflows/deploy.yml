@@ -34,7 +34,7 @@ jobs:
             set -e
             #
             # Pull repository state to vm
-            sudo rm -fr My-Patterns
+            sudo rm -fr patterns
             git clone https://github.com/Niamh13/My-Patterns
             cd patterns
             #
