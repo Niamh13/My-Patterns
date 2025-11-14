@@ -36,7 +36,7 @@ jobs:
             # Pull repository state to vm
             sudo rm -fr My-Patterns
             git clone https://github.com/Niamh13/My-Patterns
-            cd myCadBackend
+            cd My-Patterns
             #
             # Install dependencies, migrate the database, and start the application
             export PATH=/home/ubuntu/.local/share/mise/installs/ruby/3.4.7/bin:${PATH}
