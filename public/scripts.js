@@ -1,4 +1,4 @@
-const apiUrl = "ec2-44-206-128-223.compute-1.amazonaws.com/patterns";
+const apiUrl = "http://ec2-44-206-128-223.compute-1.amazonaws.com/patterns";
 
 // Load patterns, optionally filtered by search term
 async function loadPatterns(searchTerm = "") {
