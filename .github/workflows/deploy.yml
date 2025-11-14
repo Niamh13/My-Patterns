@@ -52,4 +52,4 @@ jobs:
       - name: Clean up
         run: |
           # Remove the private key after use
-          rm -f keypair.pem
+          rm -f myKey.pem
